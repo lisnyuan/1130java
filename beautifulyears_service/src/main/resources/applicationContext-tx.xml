@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    spring容器配置之事务部分，主要配置事务管理器，数据源引用，暂时红色，等
+            项目运行后，与依赖的模块共享一个spring容器，会引用dao模块的datasource
+        1 配置事务管理，类为DataSourceTransactionManager，有一个属性，指定dataSource
+        2 开启事务注解功能，注意是tx的annotation-driven，配置属性transaction-manager，
+            需要proxy-target-class为true，表示使用cglib代理，因为事务是通过代理实现的，代理对象
+            会将原对象包起来，导致消费者获取对应的对象，cglib可以将子对象发送出去
+-->
+
+
+<!--    1 开启事务管理-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+<!--    2 开启事务注解功能-->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+</beans>
